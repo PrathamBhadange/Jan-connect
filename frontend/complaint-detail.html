@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JanConnect - Complaint Details</title>
+<meta name="description" content="View detailed information about your grievance complaint on JanConnect.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Inter','Segoe UI',sans-serif;
+    background:#f4f6f9;
+    color:#333;
+    min-height:100vh;
+}
+
+/* ---- Top Nav ---- */
+.top-nav{
+    background:#1a2a3a;
+    padding:14px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.nav-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.nav-logo{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.nav-title{
+    font-size:20px;
+    font-weight:700;
+    color:#fff;
+}
+
+.nav-subtitle{
+    font-size:13px;
+    color:#a0b0c0;
+    margin-top:2px;
+}
+
+/* ---- Page Header ---- */
+.page-header{
+    background:#fff;
+    border-bottom:1px solid #e0e4e8;
+    padding:20px 40px;
+}
+
+.page-header h1{
+    font-size:22px;
+    font-weight:700;
+    color:#1a2a3a;
+    margin-bottom:4px;
+}
+
+.page-header p{
+    font-size:14px;
+    color:#777;
+}
+
+.back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 0;
+    margin:0 40px;
+    font-size:14px;
+    color:#2c3e90;
+    text-decoration:none;
+    font-weight:600;
+    transition:color 0.2s;
+}
+
+.back-link:hover{
+    color:#1e2d6a;
+}
+
+/* ---- Main Layout ---- */
+.detail-main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:24px 40px 40px;
+    display:grid;
+    grid-template-columns:1fr 380px;
+    gap:24px;
+    align-items:start;
+}
+
+/* ---- Cards ---- */
+.detail-card{
+    background:#fff;
+    border:1px solid #e0e4e8;
+    border-radius:10px;
+    padding:28px 30px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.05);
+}
+
+.detail-card h2{
+    font-size:18px;
+    font-weight:700;
+    color:#1a2a3a;
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+/* ---- Complaint Info Grid ---- */
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.info-item{
+    display:flex;
+    flex-direction:column;
+}
+
+.info-item.full-width{
+    grid-column:1/-1;
+}
+
+.info-label{
+    font-size:12px;
+    font-weight:600;
+    color:#5a3e2b;
+    margin-bottom:4px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+}
+
+.info-value{
+    font-size:14px;
+    color:#333;
+    padding:10px 14px;
+    background:#f8f9fa;
+    border:1px solid #e0e4e8;
+    border-radius:6px;
+    min-height:40px;
+    word-wrap:break-word;
+}
+
+.info-value.description{
+    min-height:80px;
+    white-space:pre-wrap;
+}
+
+/* Status Badge */
+.status-badge{
+    display:inline-block;
+    padding:5px 14px;
+    border-radius:5px;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+}
+
+.status-pending{background:#f39c12;}
+.status-resolved{background:#2ecc71;}
+.status-escalated{background:#e74c3c;}
+.status-in-progress{background:#3498db;}
+
+/* Evidence Image */
+.evidence-section{
+    margin-top:18px;
+}
+
+.evidence-section img{
+    max-width:100%;
+    max-height:250px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    cursor:pointer;
+    transition:transform 0.2s;
+}
+
+.evidence-section img:hover{
+    transform:scale(1.02);
+}
+
+.no-evidence{
+    color:#999;
+    font-size:13px;
+    font-style:italic;
+    padding:20px;
+    text-align:center;
+    background:#f8f9fa;
+    border:2px dashed #ddd;
+    border-radius:8px;
+}
+
+/* ---- Right Sidebar ---- */
+.sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
+/* ---- SLA Countdown ---- */
+.sla-card{
+    text-align:center;
+}
+
+.sla-card h2{
+    justify-content:center;
+    margin-bottom:16px;
+}
+
+.sla-timer{
+    font-size:48px;
+    font-weight:800;
+    color:#e74c3c;
+    letter-spacing:1px;
+    margin-bottom:8px;
+    font-variant-numeric:tabular-nums;
+}
+
+.sla-timer .time-unit{
+    font-size:20px;
+    font-weight:600;
+    color:#888;
+}
+
+.sla-label{
+    font-size:14px;
+    color:#777;
+    margin-top:4px;
+}
+
+.sla-status{
+    margin-top:14px;
+    padding:8px 16px;
+    border-radius:6px;
+    font-size:13px;
+    font-weight:600;
+    display:inline-block;
+}
+
+.sla-within{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+.sla-warning{
+    background:#fff3e0;
+    color:#e65100;
+}
+
+.sla-breached{
+    background:#ffebee;
+    color:#c62828;
+}
+
+.sla-resolved-badge{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+/* ---- Progress Timeline ---- */
+.timeline{
+    margin-top:14px;
+}
+
+.timeline-item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding-bottom:18px;
+    position:relative;
+}
+
+.timeline-item:not(:last-child)::before{
+    content:'';
+    position:absolute;
+    left:11px;
+    top:26px;
+    bottom:0;
+    width:2px;
+    background:#e0e4e8;
+}
+
+.timeline-dot{
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    flex-shrink:0;
+    color:#fff;
+}
+
+.dot-active{
+    background:#2c3e90;
+}
+
+.dot-done{
+    background:#2ecc71;
+}
+
+.dot-pending{
+    background:#ddd;
+    color:#999;
+}
+
+.dot-escalated{
+    background:#e74c3c;
+}
+
+.timeline-content h4{
+    font-size:14px;
+    font-weight:600;
+    color:#333;
+    margin-bottom:2px;
+}
+
+.timeline-content p{
+    font-size:12px;
+    color:#999;
+}
+
+/* ---- Feedback Section ---- */
+.feedback-card textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #c8cdd3;
+    border-radius:6px;
+    font-size:14px;
+    font-family:'Inter','Segoe UI',sans-serif;
+    resize:vertical;
+    min-height:90px;
+    outline:none;
+    transition:border-color 0.2s;
+}
+
+.feedback-card textarea:focus{
+    border-color:#2c3e90;
+    box-shadow:0 0 0 3px rgba(44,62,144,0.1);
+}
+
+.feedback-card textarea::placeholder{
+    color:#aaa;
+}
+
+.feedback-btn{
+    margin-top:12px;
+    background:#e74c3c;
+    color:#fff;
+    border:none;
+    padding:10px 24px;
+    border-radius:6px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.2s;
+}
+
+.feedback-btn:hover{
+    background:#c0392b;
+}
+
+.feedback-btn:disabled{
+    background:#ccc;
+    cursor:not-allowed;
+}
+
+.feedback-success{
+    color:#2e7d32;
+    font-size:13px;
+    font-weight:600;
+    margin-top:8px;
+}
+
+/* ---- Loading State ---- */
+.loading-state{
+    text-align:center;
+    padding:60px 20px;
+    color:#999;
+    font-size:16px;
+}
+
+.error-state{
+    text-align:center;
+    padding:60px 20px;
+    color:#e74c3c;
+    font-size:16px;
+}
+
+/* ---- Lightbox ---- */
+.lightbox-overlay{
+    display:none;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.85);
+    z-index:10001;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.lightbox-overlay.active{
+    display:flex;
+}
+
+.lightbox-overlay img{
+    max-width:90%;
+    max-height:90%;
+    border-radius:8px;
+}
+
+/* ---- Responsive ---- */
+@media(max-width:900px){
+    .detail-main{
+        grid-template-columns:1fr;
+        padding:20px;
+    }
+}
+
+@media(max-width:600px){
+    .page-header{
+        padding:16px 20px;
+    }
+    .back-link{
+        margin:0 20px;
+    }
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+    .sla-timer{
+        font-size:36px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="top-nav">
+    <div class="nav-brand">
+        <img src="logo.png" alt="JanConnect Logo" class="nav-logo">
+        <div>
+            <div class="nav-title">JanConnect</div>
+            <div class="nav-subtitle">Smart Civic Solutions</div>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+    <h1>Complaint Details</h1>
+    <p>View details and track the status of your grievance</p>
+</div>
+
+<a href="citizen-dashboard.html" class="back-link">← Back to Dashboard</a>
+
+<!-- Main Content -->
+<div class="detail-main" id="detailMain">
+    <div class="loading-state" id="loadingState">Loading complaint details...</div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Evidence">
+</div>
+
+<script>
+
+const API_BASE = 'http://localhost:5000/api';
+const urlParams = new URLSearchParams(window.location.search);
+const complaintId = urlParams.get('id');
+
+let slaInterval = null;
+
+// ============ INIT ============
+
+if(!complaintId){
+    showError('No complaint ID specified.');
+} else {
+    loadComplaintDetail();
+}
+
+// ============ LOAD DETAIL ============
+
+async function loadComplaintDetail(){
+    try {
+        const res = await fetch(API_BASE + '/complaints/' + encodeURIComponent(complaintId));
+        
+        if(!res.ok){
+            const data = await res.json();
+            showError(data.error || 'Complaint not found.');
+            return;
+        }
+
+        const complaint = await res.json();
+        renderDetail(complaint);
+
+    } catch(err){
+        showError('Server unavailable. Please try again later.');
+        console.error('Load detail error:', err);
+    }
+}
+
+// ============ RENDER ============
+
+function renderDetail(c){
+    const main = document.getElementById('detailMain');
+    const statusClass = 'status-' + c.status.toLowerCase().replace(' ','-');
+
+    // Calculate SLA
+    const createdAt = new Date(c.createdAt);
+    const slaDeadline = new Date(createdAt.getTime() + 24 * 60 * 60 * 1000); // 24 hours
+    const now = new Date();
+    const remaining = slaDeadline - now;
+    const isResolved = c.status === 'Resolved';
+    const isEscalated = c.status === 'Escalated';
+    const slaBreached = remaining <= 0 && !isResolved;
+
+    main.innerHTML = `
+    <!-- LEFT: Complaint Info -->
+    <div class="detail-card">
+        <h2>📋 Submitted Grievance</h2>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Complaint ID</span>
+                <div class="info-value">${c.id}</div>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Status</span>
+                <div class="info-value">
+                    <span class="status-badge ${statusClass}">${c.status}</span>
+                </div>
+            </div>
+            <div class="info-item full-width">
+                <span class="info-label">Complaint Title *</span>
+                <div class="info-value">${c.title}</div>
+            </div>
+            <div class="info-item full-width">
+                <span class="info-label">Description</span>
+                <div class="info-value description">${c.description}</div>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Category</span>
+                <div class="info-value">${c.category}</div>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Ward</span>
+                <div class="info-value">${c.ward}</div>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Location</span>
+                <div class="info-value">${c.address || 'Not specified'}</div>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Filed On</span>
+                <div class="info-value">${c.date}</div>
+            </div>
+        </div>
+
+        <!-- Evidence -->
+        <div class="evidence-section">
+            <span class="info-label">Upload Evidence (Before Photo)</span>
+            ${c.image 
+                ? '<img src="' + c.image + '" alt="Evidence" onclick="openLightbox(this.src)">'
+                : '<div class="no-evidence">📷 No evidence image uploaded</div>'
+            }
+        </div>
+    </div>
+
+    <!-- RIGHT: Sidebar -->
+    <div class="sidebar">
+        <!-- SLA Countdown -->
+        <div class="detail-card sla-card">
+            <h2>SLA Countdown</h2>
+            <div class="sla-timer" id="slaTimer">--h --m --s</div>
+            <div class="sla-label">Time for initial response.</div>
+            <div id="slaStatus"></div>
+        </div>
+
+        <!-- Progress Timeline -->
+        <div class="detail-card">
+            <h2>📌 Progress</h2>
+            <div class="timeline" id="timeline"></div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="detail-card feedback-card">
+            <h2>💬 Feedback</h2>
+            <textarea id="feedbackText" placeholder="Share your experience with the grievance process..."></textarea>
+            <button class="feedback-btn" onclick="submitFeedback()" id="feedbackBtn">Submit Feedback</button>
+            <div id="feedbackMsg"></div>
+        </div>
+    </div>
+    `;
+
+    // Start SLA timer
+    startSLATimer(createdAt, c.status);
+
+    // Render timeline
+    renderTimeline(c);
+
+    // Load existing feedback
+    loadFeedback(c.id);
+}
+
+// ============ SLA TIMER ============
+
+function startSLATimer(createdAt, status){
+    const slaDeadline = new Date(createdAt.getTime() + 24 * 60 * 60 * 1000);
+    const timerEl = document.getElementById('slaTimer');
+    const statusEl = document.getElementById('slaStatus');
+
+    if(status === 'Resolved'){
+        timerEl.innerHTML = '✅ Resolved';
+        timerEl.style.color = '#2e7d32';
+        timerEl.style.fontSize = '32px';
+        statusEl.innerHTML = '<div class="sla-status sla-resolved-badge">Complaint resolved successfully</div>';
+        return;
+    }
+
+    if(status === 'Escalated'){
+        timerEl.innerHTML = '⚠️ Escalated';
+        timerEl.style.color = '#c62828';
+        timerEl.style.fontSize = '32px';
+        statusEl.innerHTML = '<div class="sla-status sla-breached">SLA breached — auto-escalated</div>';
+        return;
+    }
+
+    function updateTimer(){
+        const now = new Date();
+        const remaining = slaDeadline - now;
+
+        if(remaining <= 0){
+            timerEl.innerHTML = '<span style="color:#c62828">00</span><span class="time-unit">h </span><span style="color:#c62828">00</span><span class="time-unit">m </span><span style="color:#c62828">00</span><span class="time-unit">s</span>';
+            statusEl.innerHTML = '<div class="sla-status sla-breached">⚠️ SLA Breached — Auto-escalating...</div>';
+            clearInterval(slaInterval);
+            // Trigger auto-escalation
+            autoEscalate();
+            return;
+        }
+
+        const hours = Math.floor(remaining / (1000 * 60 * 60));
+        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+        const hStr = String(hours).padStart(2,'0');
+        const mStr = String(minutes).padStart(2,'0');
+        const sStr = String(seconds).padStart(2,'0');
+
+        timerEl.innerHTML = `<span>${hStr}</span><span class="time-unit">h </span><span>${mStr}</span><span class="time-unit">m </span><span>${sStr}</span><span class="time-unit">s</span>`;
+
+        // Status badge
+        if(hours < 4){
+            statusEl.innerHTML = '<div class="sla-status sla-warning">⏰ Low time remaining</div>';
+        } else {
+            statusEl.innerHTML = '<div class="sla-status sla-within">✅ Within SLA timeframe</div>';
+        }
+    }
+
+    updateTimer();
+    slaInterval = setInterval(updateTimer, 1000);
+}
+
+// ============ AUTO ESCALATE ============
+
+async function autoEscalate(){
+    try {
+        const res = await fetch(API_BASE + '/complaints/' + encodeURIComponent(complaintId) + '/status', {
+            method: 'PATCH',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ status: 'Escalated' })
+        });
+
+        if(res.ok){
+            // Reload to show updated status
+            setTimeout(() => {
+                loadComplaintDetail();
+            }, 2000);
+        }
+    } catch(err){
+        console.error('Auto-escalate error:', err);
+    }
+}
+
+// ============ TIMELINE ============
+
+function renderTimeline(c){
+    const timeline = document.getElementById('timeline');
+    const status = c.status;
+
+    const steps = [
+        { label: 'Complaint Filed', desc: c.date, done: true },
+        { label: 'Under Review', desc: 'Assigned to department', done: ['In Progress','Resolved','Escalated'].includes(status) },
+        { label: 'In Progress', desc: 'Being worked on', done: ['Resolved','Escalated'].includes(status) || status === 'In Progress' },
+        { label: status === 'Escalated' ? 'Escalated' : 'Resolved', desc: status === 'Escalated' ? 'SLA breached' : 'Issue fixed', done: ['Resolved','Escalated'].includes(status) }
+    ];
+
+    let html = '';
+    steps.forEach((step, i) => {
+        let dotClass = 'dot-pending';
+        let icon = (i+1);
+        if(step.done && step.label === 'Escalated'){
+            dotClass = 'dot-escalated';
+            icon = '!';
+        } else if(step.done){
+            dotClass = 'dot-done';
+            icon = '✓';
+        }
+
+        html += `
+        <div class="timeline-item">
+            <div class="timeline-dot ${dotClass}">${icon}</div>
+            <div class="timeline-content">
+                <h4>${step.label}</h4>
+                <p>${step.desc}</p>
+            </div>
+        </div>`;
+    });
+
+    timeline.innerHTML = html;
+}
+
+// ============ FEEDBACK ============
+
+async function submitFeedback(){
+    const text = document.getElementById('feedbackText').value.trim();
+    const btn = document.getElementById('feedbackBtn');
+    const msg = document.getElementById('feedbackMsg');
+
+    if(!text){
+        msg.innerHTML = '<span style="color:#e74c3c">Please enter your feedback.</span>';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    try {
+        const res = await fetch(API_BASE + '/complaints/' + encodeURIComponent(complaintId) + '/feedback', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ feedback: text, userEmail: localStorage.getItem('userEmail') || '' })
+        });
+
+        if(res.ok){
+            msg.innerHTML = '<div class="feedback-success">✅ Feedback submitted successfully!</div>';
+            document.getElementById('feedbackText').value = '';
+            btn.textContent = 'Submit Feedback';
+            btn.disabled = false;
+        } else {
+            const data = await res.json();
+            msg.innerHTML = '<span style="color:#e74c3c">' + (data.error || 'Failed to submit.') + '</span>';
+            btn.textContent = 'Submit Feedback';
+            btn.disabled = false;
+        }
+    } catch(err){
+        msg.innerHTML = '<span style="color:#e74c3c">Server unavailable.</span>';
+        btn.textContent = 'Submit Feedback';
+        btn.disabled = false;
+    }
+}
+
+async function loadFeedback(complaintId){
+    // Placeholder — feedback is stored but we just reset the form
+}
+
+// ============ HELPERS ============
+
+function showError(msg){
+    document.getElementById('detailMain').innerHTML = '<div class="error-state">' + msg + '</div>';
+}
+
+function openLightbox(src){
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('active');
+}
+
+</script>
+
+</body>
+</html>
