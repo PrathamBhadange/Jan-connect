@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JanConnect - Smart Civic Solutions</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI;
+background:#f4f6f9;
+}
+
+/* HEADER */
+
+.navbar{
+background:#2c3e90;
+color:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 40px;
+box-shadow:0 3px 8px rgba(0,0,0,0.2);
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:25px;
+}
+
+.logo{
+width:120px;
+}
+
+.logo-text{
+font-size:26px;
+font-weight:bold;
+}
+
+.nav-right{
+display:flex;
+align-items:center;
+gap:25px;
+}
+
+/* Dropdown */
+
+.dropdown{
+position:relative;
+}
+
+.dropdown button{
+background:none;
+border:none;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+.dropdown-content{
+display:none;
+position:absolute;
+background:white;
+min-width:140px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+border-radius:6px;
+overflow:hidden;
+z-index:100;
+}
+
+.dropdown-content a{
+display:block;
+padding:10px;
+text-decoration:none;
+color:black;
+}
+
+.dropdown-content a:hover{
+background:#f0f0f0;
+}
+
+.dropdown:hover .dropdown-content{
+display:block;
+}
+
+/* Highlight Buttons */
+
+.highlight-btn{
+background:#ff6b00;
+padding:8px 14px;
+border-radius:6px;
+font-weight:bold;
+}
+
+.highlight-btn:hover{
+background:#ff8c2b;
+}
+
+/* DASHBOARD */
+
+.container{
+padding:30px;
+}
+
+/* Cards */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card h1{
+margin:0;
+font-size:28px;
+}
+
+.green{color:#2ecc71}
+.orange{color:#f39c12}
+.blue{color:#3498db}
+.purple{color:#9b59b6}
+.red{color:#e74c3c}
+
+/* Charts */
+
+.dashboard-grid{
+margin-top:30px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.box{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Category Bars */
+
+.bar{
+height:10px;
+background:#ddd;
+border-radius:10px;
+margin:6px 0;
+}
+
+.bar-fill{
+height:100%;
+border-radius:10px;
+}
+
+.road{width:80%;background:#2c3e90}
+.water{width:60%;background:#3498db}
+.electric{width:50%;background:#f39c12}
+.sanitation{width:40%;background:#2ecc71}
+.safety{width:25%;background:#e74c3c}
+
+/* Table */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:left;
+}
+
+.progress{
+height:8px;
+background:#ddd;
+border-radius:10px;
+}
+
+.progress-fill{
+height:100%;
+background:#f39c12;
+border-radius:10px;
+}
+
+/* Chart info */
+
+.chart-info{
+text-align:center;
+margin-top:10px;
+font-size:14px;
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:40px;
+background:#1b255a;
+color:white;
+padding:30px;
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+}
+
+.footer h3{
+margin-top:0;
+}
+
+.footer a{
+color:#ddd;
+text-decoration:none;
+display:block;
+margin:5px 0;
+}
+
+.footer a:hover{
+color:white;
+}
+
+.copyright{
+text-align:center;
+background:#10163f;
+color:#ccc;
+padding:10px;
+font-size:13px;
+}
+
+/* Welcome bar */
+.welcome-bar{
+background:#eef2f7;
+padding:12px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #ddd;
+}
+
+.welcome-bar span{
+font-size:16px;
+font-weight:600;
+color:#2c3e90;
+}
+
+/* File Complaint Button */
+.file-complaint-btn{
+background:#2c3e90;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:6px;
+font-size:14px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.file-complaint-btn:hover{
+background:#1e2d6a;
+}
+
+/* Modal Overlay */
+.modal-overlay{
+display:none;
+position:fixed;
+top:0;left:0;right:0;bottom:0;
+background:rgba(0,0,0,0.5);
+z-index:999;
+justify-content:center;
+align-items:center;
+}
+
+.modal-overlay.active{
+display:flex;
+}
+
+.modal{
+background:white;
+padding:30px;
+border-radius:10px;
+width:460px;
+max-width:90%;
+max-height:80vh;
+overflow-y:auto;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal h2{
+margin-top:0;
+color:#2c3e90;
+}
+
+.modal label{
+display:block;
+margin-top:12px;
+font-weight:600;
+font-size:14px;
+color:#333;
+}
+
+.modal input,
+.modal select,
+.modal textarea{
+width:100%;
+padding:10px;
+margin-top:4px;
+border:1px solid #ccc;
+border-radius:6px;
+font-size:14px;
+font-family:Segoe UI;
+box-sizing:border-box;
+}
+
+.modal textarea{
+resize:vertical;
+min-height:80px;
+}
+
+.modal-actions{
+margin-top:20px;
+display:flex;
+gap:10px;
+justify-content:flex-end;
+}
+
+.modal-actions button{
+padding:10px 20px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
+font-weight:bold;
+}
+
+.btn-submit{
+background:#2c3e90;
+color:white;
+}
+
+.btn-submit:hover{
+background:#1e2d6a;
+}
+
+.btn-cancel{
+background:#ddd;
+color:#333;
+}
+
+.btn-cancel:hover{
+background:#ccc;
+}
+
+/* Complaints Section */
+.complaints-section{
+margin-top:30px;
+}
+
+.complaints-section h3{
+margin-bottom:15px;
+}
+
+.complaint-card{
+background:white;
+padding:16px 20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+margin-bottom:12px;
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+}
+
+.complaint-card .complaint-info h4{
+margin:0 0 4px 0;
+color:#2c3e90;
+}
+
+.complaint-card .complaint-info p{
+margin:2px 0;
+font-size:13px;
+color:#555;
+}
+
+.complaint-card .complaint-status{
+padding:5px 12px;
+border-radius:5px;
+font-size:12px;
+font-weight:bold;
+color:white;
+white-space:nowrap;
+}
+
+.status-pending{background:#f39c12}
+.status-resolved{background:#2ecc71}
+.status-escalated{background:#e74c3c}
+.status-in-progress{background:#3498db}
+.status-reopened{background:#ff9800}
+.status-closed{background:#607d8b}
+
+.no-complaints{
+text-align:center;
+color:#999;
+padding:30px;
+font-size:14px;
+}
+
+/* Message toast */
+.toast{
+position:fixed;
+top:20px;
+right:20px;
+background:#2ecc71;
+color:white;
+padding:14px 24px;
+border-radius:8px;
+font-weight:bold;
+z-index:10000;
+display:none;
+box-shadow:0 4px 15px rgba(0,0,0,0.2);
+}
+
+.toast.error{
+    background:#e74c3c;
+}
+
+/* Image Upload Area */
+.upload-area{
+    margin-top:6px;
+    border:2px dashed #ccc;
+    border-radius:8px;
+    padding:20px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color 0.3s, background 0.3s;
+    position:relative;
+}
+
+.upload-area:hover,
+.upload-area.dragover{
+    border-color:#2c3e90;
+    background:#eef2f7;
+}
+
+.upload-area .upload-icon{
+    font-size:32px;
+    display:block;
+    margin-bottom:6px;
+}
+
+.upload-area .upload-text{
+    font-size:13px;
+    color:#777;
+}
+
+.upload-area .upload-text span{
+    color:#2c3e90;
+    font-weight:600;
+    text-decoration:underline;
+}
+
+.upload-area input[type="file"]{
+    display:none;
+}
+
+.image-preview{
+    margin-top:10px;
+    position:relative;
+    display:inline-block;
+}
+
+.image-preview img{
+    max-width:100%;
+    max-height:160px;
+    border-radius:6px;
+    border:1px solid #ddd;
+}
+
+.image-preview .remove-img{
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    background:#e74c3c;
+    color:white;
+    border:none;
+    border-radius:50%;
+    width:22px;
+    height:22px;
+    font-size:12px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+
+.complaint-card .complaint-img{
+    margin-top:8px;
+}
+
+.complaint-card .complaint-img img{
+    max-width:120px;
+    max-height:80px;
+    border-radius:6px;
+    border:1px solid #ddd;
+    cursor:pointer;
+    transition:transform 0.2s;
+}
+
+.complaint-card .complaint-img img:hover{
+    transform:scale(1.05);
+}
+
+/* Lightbox for full image view */
+.lightbox-overlay{
+    display:none;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.8);
+    z-index:10001;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.lightbox-overlay.active{
+    display:flex;
+}
+
+.lightbox-overlay img{
+    max-width:90%;
+    max-height:90%;
+    border-radius:8px;
+    box-shadow:0 4px 30px rgba(0,0,0,0.5);
+}
+
+/* Show Details Button */
+.show-details-btn{
+    background:#2c3e90;
+    color:white;
+    border:none;
+    padding:6px 14px;
+    border-radius:5px;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.2s;
+    white-space:nowrap;
+}
+
+.show-details-btn:hover{
+    background:#1e2d6a;
+}
+
+/* ======== SIDEBAR NAVIGATION ======== */
+
+.hamburger-btn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:26px;
+    cursor:pointer;
+    padding:4px 8px;
+    border-radius:6px;
+    transition:background 0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.hamburger-btn:hover{
+    background:rgba(255,255,255,0.15);
+}
+
+.sidebar-overlay{
+    display:none;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(3px);
+    z-index:20000;
+    animation:fadeInSidebar 0.25s ease;
+}
+
+.sidebar-overlay.active{
+    display:block;
+}
+
+@keyframes fadeInSidebar{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+.sidebar-nav{
+    position:fixed;
+    top:0;
+    left:-300px;
+    width:270px;
+    height:100vh;
+    background:linear-gradient(180deg,#1a2980 0%,#26408b 100%);
+    z-index:20001;
+    box-shadow:4px 0 25px rgba(0,0,0,0.3);
+    transition:left 0.35s cubic-bezier(0.4,0,0.2,1);
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+}
+
+.sidebar-nav.open{
+    left:0;
+}
+
+.sidebar-header{
+    padding:24px 22px 18px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.sidebar-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.sidebar-brand img{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+}
+
+.sidebar-brand span{
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+}
+
+.sidebar-close{
+    background:none;
+    border:none;
+    color:rgba(255,255,255,0.7);
+    font-size:22px;
+    cursor:pointer;
+    padding:4px;
+    border-radius:50%;
+    transition:all 0.2s;
+}
+
+.sidebar-close:hover{
+    color:#fff;
+    background:rgba(255,255,255,0.1);
+}
+
+.sidebar-user{
+    padding:20px 22px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.sidebar-avatar{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ff9800,#f57c00);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    color:#fff;
+    font-weight:700;
+    flex-shrink:0;
+}
+
+.sidebar-user-info .sidebar-username{
+    font-size:15px;
+    font-weight:600;
+    color:#fff;
+}
+
+.sidebar-user-info .sidebar-role{
+    font-size:12px;
+    color:rgba(255,255,255,0.6);
+    margin-top:2px;
+}
+
+.sidebar-menu{
+    padding:12px 0;
+    flex:1;
+}
+
+.sidebar-menu-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:13px 24px;
+    color:rgba(255,255,255,0.8);
+    text-decoration:none;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    transition:all 0.2s;
+    border:none;
+    background:none;
+    width:100%;
+    text-align:left;
+    font-family:inherit;
+}
+
+.sidebar-menu-item:hover{
+    background:rgba(255,255,255,0.1);
+    color:#fff;
+    padding-left:28px;
+}
+
+.sidebar-menu-item.active{
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    border-left:3px solid #ff9800;
+    padding-left:21px;
+}
+
+.sidebar-menu-item .menu-icon{
+    font-size:18px;
+    width:24px;
+    text-align:center;
+}
+
+.sidebar-divider{
+    height:1px;
+    background:rgba(255,255,255,0.1);
+    margin:8px 16px;
+}
+
+.sidebar-footer{
+    padding:16px 22px;
+    border-top:1px solid rgba(255,255,255,0.12);
+}
+
+.sidebar-logout-btn{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:12px 18px;
+    background:rgba(231,76,60,0.15);
+    border:1px solid rgba(231,76,60,0.3);
+    border-radius:8px;
+    color:#ff6b6b;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.2s;
+    font-family:inherit;
+}
+
+.sidebar-logout-btn:hover{
+    background:rgba(231,76,60,0.25);
+    color:#fff;
+}
+
+/* ======== Duplicate Complaint Modal ======== */
+.duplicate-overlay{
+    display:none;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(4px);
+    z-index:10000;
+    justify-content:center;
+    align-items:center;
+    animation:fadeInOverlay 0.3s ease;
+}
+
+.duplicate-overlay.active{
+    display:flex;
+}
+
+@keyframes fadeInOverlay{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+@keyframes slideUpModal{
+    from{ opacity:0; transform:translateY(30px) scale(0.95); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+}
+
+.duplicate-modal{
+    background:#fff;
+    border-radius:16px;
+    width:480px;
+    max-width:92%;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    overflow:hidden;
+    animation:slideUpModal 0.35s ease;
+}
+
+.duplicate-header{
+    background:linear-gradient(135deg,#ff9800,#f57c00);
+    padding:22px 28px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.duplicate-header .dup-icon{
+    font-size:36px;
+    animation:pulseIcon 1.5s infinite;
+}
+
+@keyframes pulseIcon{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.15);}
+}
+
+.duplicate-header .dup-title{
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    line-height:1.3;
+}
+
+.duplicate-header .dup-subtitle{
+    color:rgba(255,255,255,0.85);
+    font-size:13px;
+    font-weight:400;
+    margin-top:2px;
+}
+
+.duplicate-body{
+    padding:24px 28px;
+}
+
+.dup-complaint-card{
+    background:#f8f9fb;
+    border:1px solid #e2e6ea;
+    border-left:4px solid #f57c00;
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:18px;
+}
+
+.dup-complaint-card .dup-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+}
+
+.dup-complaint-card .dup-row:last-child{
+    margin-bottom:0;
+}
+
+.dup-label{
+    font-size:12px;
+    font-weight:600;
+    color:#888;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+}
+
+.dup-value{
+    font-size:14px;
+    font-weight:600;
+    color:#333;
+}
+
+.dup-value.dup-id{
+    color:#2c3e90;
+    font-family:monospace;
+    font-size:15px;
+}
+
+.dup-status-badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:4px;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+}
+
+.dup-support-count{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    color:#666;
+    margin-top:6px;
+    padding-top:10px;
+    border-top:1px dashed #ddd;
+}
+
+.dup-support-count span{
+    font-weight:700;
+    color:#2c3e90;
+}
+
+.duplicate-actions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.dup-btn{
+    width:100%;
+    padding:12px 20px;
+    border:none;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:all 0.2s ease;
+}
+
+.dup-btn-view{
+    background:#2c3e90;
+    color:#fff;
+}
+
+.dup-btn-view:hover{
+    background:#1e2d6a;
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(44,62,144,0.3);
+}
+
+.dup-btn-support{
+    background:linear-gradient(135deg,#ff9800,#f57c00);
+    color:#fff;
+}
+
+.dup-btn-support:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(245,124,0,0.3);
+}
+
+.dup-btn-continue{
+    background:#f0f0f0;
+    color:#555;
+}
+
+.dup-btn-continue:hover{
+    background:#e0e0e0;
+}
+
+.dup-divider{
+    text-align:center;
+    font-size:12px;
+    color:#aaa;
+    position:relative;
+    margin:4px 0;
+}
+
+.dup-divider::before,
+.dup-divider::after{
+    content:'';
+    position:absolute;
+    top:50%;
+    width:38%;
+    height:1px;
+    background:#ddd;
+}
+
+.dup-divider::before{left:0;}
+.dup-divider::after{right:0;}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="navbar">
+
+<div class="logo-area">
+<img src="logo.png" class="logo">
+<div class="logo-text">JanConnect</div>
+</div>
+
+<div class="nav-right">
+
+<div class="dropdown">
+<button>🌐 Language</button>
+<div class="dropdown-content">
+<a href="#" onclick="setLanguage('en')">English</a>
+<a href="#" onclick="setLanguage('mr')">मराठी</a>
+</div>
+</div>
+
+<!-- Auth buttons (shown when NOT logged in) -->
+<div id="authButtons" style="display:flex;gap:25px;">
+
+<div class="dropdown highlight-btn">
+<button>Register &#9662;</button>
+<div class="dropdown-content">
+<a href="register.html">Citizen</a>
+<a href="register.html">Admin</a>
+</div>
+</div>
+
+<div class="dropdown highlight-btn">
+<button onclick="window.location.href='login.html'">Login</button>
+</div>
+
+</div>
+
+<!-- User menu (shown when logged in) -->
+<div id="userMenu" style="display:none;align-items:center;gap:15px;">
+<span id="userWelcome" style="font-size:15px;"></span>
+<div class="dropdown highlight-btn">
+<button onclick="logout()">Logout</button>
+</div>
+<button class="hamburger-btn" onclick="openSidebar()" title="Menu">☰</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- SIDEBAR NAVIGATION -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<nav class="sidebar-nav" id="sidebarNav">
+    <div class="sidebar-header">
+        <div class="sidebar-brand">
+            <img src="logo.png" alt="Logo">
+            <span>JanConnect</span>
+        </div>
+        <button class="sidebar-close" onclick="closeSidebar()">&times;</button>
+    </div>
+    <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarAvatar">C</div>
+        <div class="sidebar-user-info">
+            <div class="sidebar-username" id="sidebarUsername">Citizen</div>
+            <div class="sidebar-role">Citizen Account</div>
+        </div>
+    </div>
+    <div class="sidebar-menu">
+        <a class="sidebar-menu-item active" onclick="sidebarNavigate('dashboard')">
+            <span class="menu-icon">🏠</span> Dashboard
+        </a>
+        <a class="sidebar-menu-item" onclick="sidebarNavigate('submit')">
+            <span class="menu-icon">📝</span> Submit Complaint
+        </a>
+        <a class="sidebar-menu-item" onclick="sidebarNavigate('track')">
+            <span class="menu-icon">📍</span> Track Complaints
+        </a>
+        <a class="sidebar-menu-item" onclick="sidebarNavigate('mycomplaints')">
+            <span class="menu-icon">📋</span> My Complaints
+        </a>
+        <div class="sidebar-divider"></div>
+        <a class="sidebar-menu-item" onclick="sidebarNavigate('help')">
+            <span class="menu-icon">❓</span> Help & Support
+        </a>
+    </div>
+    <div class="sidebar-footer">
+        <button class="sidebar-logout-btn" onclick="logout()">
+            <span>🚪</span> Logout
+        </button>
+    </div>
+</nav>
+
+<!-- Welcome Bar -->
+<div class="welcome-bar" id="welcomeBar" style="display:none;">
+<span id="welcomeText">Welcome back!</span>
+<button class="file-complaint-btn" onclick="openComplaintModal()">📝 File a Complaint</button>
+</div>
+
+<!-- DASHBOARD -->
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+<h1 class="blue" id="totalCount">247</h1>
+<p data-lang-key="total_complaints">Total Complaints</p>
+</div>
+
+<div class="card">
+<h1 class="green" id="resolvedCount">178</h1>
+<p data-lang-key="resolved">Resolved</p>
+</div>
+
+<div class="card">
+<h1 class="orange" id="pendingCount">52</h1>
+<p data-lang-key="pending">Pending</p>
+</div>
+
+<div class="card">
+<h1 class="purple">3.4d</h1>
+<p data-lang-key="avg_resolution">Avg Resolution</p>
+</div>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="box">
+
+<h3 data-lang-key="category_complaints">Category-wise Complaints</h3>
+
+<p data-lang-key="roads">Roads & Infra</p>
+<div class="bar"><div class="bar-fill road"></div></div>
+
+<p data-lang-key="water">Water Supply</p>
+<div class="bar"><div class="bar-fill water"></div></div>
+
+<p data-lang-key="electricity">Electricity</p>
+<div class="bar"><div class="bar-fill electric"></div></div>
+
+<p data-lang-key="sanitation">Sanitation</p>
+<div class="bar"><div class="bar-fill sanitation"></div></div>
+
+<p data-lang-key="safety">Public Safety</p>
+<div class="bar"><div class="bar-fill safety"></div></div>
+
+</div>
+
+<div class="box">
+
+<h3 data-lang-key="resolution_status">Resolution Status</h3>
+
+<canvas id="resolutionChart" style="max-width:180px;margin:auto;"></canvas>
+
+<div class="chart-info">
+<p><span class="green">●</span> <span data-lang-key="resolved">Resolved</span> : 178</p>
+<p><span class="orange">●</span> <span data-lang-key="pending">Pending</span> : 52</p>
+<p><span class="red">●</span> <span data-lang-key="escalated">Escalated</span> : 17</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="box" style="margin-top:30px">
+
+<h3 data-lang-key="ward_sla">Ward-wise SLA Compliance</h3>
+
+<table>
+
+<tr>
+<th data-lang-key="ward">Ward</th>
+<th data-lang-key="total">Total</th>
+<th data-lang-key="resolved">Resolved</th>
+<th data-lang-key="pending">Pending</th>
+<th data-lang-key="escalated">Escalated</th>
+<th data-lang-key="avg_time">Avg Time</th>
+<th>SLA</th>
+</tr>
+
+<tr>
+<td>Ward 14 – Koregaon Park</td>
+<td>82</td>
+<td>58</td>
+<td>18</td>
+<td>6</td>
+<td>4.1d</td>
+<td><div class="progress"><div class="progress-fill" style="width:71%"></div></div></td>
+</tr>
+
+<tr>
+<td>Ward 7 – Shivajinagar</td>
+<td>67</td>
+<td>54</td>
+<td>10</td>
+<td>3</td>
+<td>2.8d</td>
+<td><div class="progress"><div class="progress-fill" style="width:81%"></div></div></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- My Complaints Section (shown when logged in) -->
+<div class="complaints-section" id="complaintsSection" style="display:none;">
+<h3 data-lang-key="my_complaints">📋 My Complaints</h3>
+<div id="complaintsList"></div>
+</div>
+
+</div>
+
+<!-- Complaint Modal -->
+<div class="modal-overlay" id="complaintModal">
+<div class="modal">
+<h2>📝 File a New Complaint</h2>
+
+<label for="complaintCategory">Category</label>
+<select id="complaintCategory">
+<option value="">-- Select Category --</option>
+<option value="Roads & Infra">Roads & Infra</option>
+<option value="Water Supply">Water Supply</option>
+<option value="Electricity">Electricity</option>
+<option value="Sanitation">Sanitation</option>
+<option value="Public Safety">Public Safety</option>
+<option value="Other">Other</option>
+</select>
+
+<label for="complaintWard">Ward</label>
+<select id="complaintWard">
+<option value="">-- Select Ward --</option>
+<option value="Ward 14 – Koregaon Park">Ward 14 – Koregaon Park</option>
+<option value="Ward 7 – Shivajinagar">Ward 7 – Shivajinagar</option>
+<option value="Ward 3 – Peth Area">Ward 3 – Peth Area</option>
+<option value="Ward 21 – Cidco">Ward 21 – Cidco</option>
+<option value="Ward 10 – Nashik Road">Ward 10 – Nashik Road</option>
+</select>
+
+<label for="complaintTitle">Complaint Title</label>
+<input type="text" id="complaintTitle" placeholder="Brief title of your complaint">
+
+<label for="complaintDesc">Description</label>
+<textarea id="complaintDesc" placeholder="Describe your issue in detail..."></textarea>
+
+    <label for="complaintAddress">Location / Address</label>
+    <input type="text" id="complaintAddress" placeholder="Street address or landmark">
+
+    <label>Upload Image (optional)</label>
+    <div class="upload-area" id="uploadArea" onclick="document.getElementById('complaintImage').click()">
+        <input type="file" id="complaintImage" accept="image/*" onchange="handleImageSelect(event)">
+        <span class="upload-icon">📷</span>
+        <div class="upload-text">Drag & drop an image here or <span>browse</span></div>
+    </div>
+    <div class="image-preview" id="imagePreview" style="display:none;">
+        <img id="previewImg" src="" alt="Preview">
+        <button class="remove-img" onclick="removeImage()" title="Remove image">✕</button>
+    </div>
+
+    <div class="modal-actions">
+<button class="btn-cancel" onclick="closeComplaintModal()">Cancel</button>
+<button class="btn-submit" onclick="submitComplaint()">Submit Complaint</button>
+</div>
+</div>
+</div>
+
+<!-- Lightbox for image preview -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Complaint Image">
+</div>
+
+<!-- Duplicate Complaint Modal -->
+<div class="duplicate-overlay" id="duplicateModal">
+    <div class="duplicate-modal">
+        <div class="duplicate-header">
+            <span class="dup-icon">⚠️</span>
+            <div>
+                <div class="dup-title">Similar complaint already exists in your area</div>
+                <div class="dup-subtitle">A matching complaint has been found nearby</div>
+            </div>
+        </div>
+        <div class="duplicate-body">
+            <div class="dup-complaint-card" id="dupComplaintInfo">
+                <!-- Populated dynamically -->
+            </div>
+            <div class="duplicate-actions">
+                <button class="dup-btn dup-btn-view" id="dupViewBtn" onclick="viewExistingComplaint()">
+                    🔍 View Existing Complaint
+                </button>
+                <button class="dup-btn dup-btn-support" id="dupSupportBtn" onclick="supportExistingComplaint()">
+                    👍 Support This Complaint
+                </button>
+                <div class="dup-divider">or</div>
+                <button class="dup-btn dup-btn-continue" id="dupContinueBtn" onclick="continueAnyway()">
+                    ➕ Continue Anyway — File New Complaint
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reappeal Modal -->
+<div class="modal-overlay" id="reappealModal">
+<div class="modal">
+<h2>🔄 Reappeal Complaint</h2>
+
+<label for="reappealReason">Reason for Reappeal</label>
+<select id="reappealReason">
+<option value="">-- Select Reason --</option>
+<option value="Issue not fully resolved">Issue not fully resolved</option>
+<option value="Resolution incomplete">Resolution incomplete</option>
+<option value="Problem recurred">Problem recurred</option>
+<option value="Unsatisfactory solution">Unsatisfactory solution</option>
+<option value="Other">Other</option>
+</select>
+
+<label for="reappealComment">Additional Comments</label>
+<textarea id="reappealComment" placeholder="Please describe why you're reappealing this complaint..."></textarea>
+
+<label>Evidence Image (optional)</label>
+<div class="upload-area" id="reappealUploadArea" onclick="document.getElementById('reappealImage').click()">
+    <input type="file" id="reappealImage" accept="image/*" onchange="handleReappealImageSelect(event)">
+    <span class="upload-icon">📷</span>
+    <div class="upload-text">Drag & drop an image here or <span>browse</span></div>
+</div>
+<div class="image-preview" id="reappealImagePreview" style="display:none;">
+    <img id="reappealPreviewImg" src="" alt="Preview">
+    <button class="remove-img" onclick="removeReappealImage()" title="Remove image">✕</button>
+</div>
+
+    <div class="modal-actions">
+<button class="btn-cancel" onclick="closeReappealModal()">Cancel</button>
+<button class="btn-submit" onclick="submitReappeal()">Submit Reappeal</button>
+</div>
+</div>
+</div>
+
+<!-- Delete Complaint Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+<div class="modal" style="width:380px;">
+<h2>🗑️ Delete Complaint?</h2>
+<p style="color:#666;line-height:1.6;margin:15px 0;">
+    Are you sure you want to delete this complaint? This action cannot be undone. Only pending complaints can be deleted.
+</p>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+<button class="btn-submit" style="background:#e74c3c;" onclick="confirmDeleteComplaint()">Delete Permanently</button>
+</div>
+</div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<div>
+<h3>Help</h3>
+<a href="#">FAQs</a>
+<a href="#">User Guide</a>
+<a href="#">Support Center</a>
+</div>
+
+<div>
+<h3>Contact Us</h3>
+<p>Email: support@janconnect.gov</p>
+<p>Phone: +91 9876543210</p>
+<p>Nashik Municipal Smart Governance Cell</p>
+</div>
+
+</div>
+
+<div class="copyright">
+© 2026 JanConnect • Smart Civic Governance Platform
+</div>
+
+<script>
+
+// ============ AUTH ============
+
+const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+const userEmail = localStorage.getItem('userEmail');
+
+function updateAuthUI(){
+    const authButtons = document.getElementById('authButtons');
+    const userMenu = document.getElementById('userMenu');
+    const welcomeBar = document.getElementById('welcomeBar');
+    const complaintsSection = document.getElementById('complaintsSection');
+
+    if(currentUser && userEmail){
+        // User is logged in
+        authButtons.style.display = 'none';
+        userMenu.style.display = 'flex';
+        welcomeBar.style.display = 'flex';
+        complaintsSection.style.display = 'block';
+
+        const firstName = currentUser.fullName ? currentUser.fullName.split(' ')[0] : userEmail;
+        document.getElementById('userWelcome').textContent = '\ud83d\udc64 ' + firstName;
+        document.getElementById('welcomeText').textContent = 'Welcome back, ' + firstName + '!';
+
+        // Populate sidebar user info
+        const avatarEl = document.getElementById('sidebarAvatar');
+        const usernameEl = document.getElementById('sidebarUsername');
+        if(avatarEl) avatarEl.textContent = firstName.charAt(0).toUpperCase();
+        if(usernameEl) usernameEl.textContent = currentUser.fullName || userEmail;
+
+        loadComplaints();
+        updateDashboardCounts();
+    } else {
+        // Not logged in \u2014 show dashboard in view-only mode
+        authButtons.style.display = 'flex';
+        userMenu.style.display = 'none';
+        welcomeBar.style.display = 'none';
+        complaintsSection.style.display = 'none';
+    }
+}
+
+function logout(){
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userRole');
+    window.location.href = 'login.html';
+}
+
+// ============ SIDEBAR ============
+
+function openSidebar(){
+    document.getElementById('sidebarOverlay').classList.add('active');
+    document.getElementById('sidebarNav').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar(){
+    document.getElementById('sidebarOverlay').classList.remove('active');
+    document.getElementById('sidebarNav').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function sidebarNavigate(target){
+    closeSidebar();
+    // Update active state
+    document.querySelectorAll('.sidebar-menu-item').forEach(item => item.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    switch(target){
+        case 'dashboard':
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            break;
+        case 'submit':
+            if(currentUser && userEmail){
+                openComplaintModal();
+            } else {
+                window.location.href = 'login.html';
+            }
+            break;
+        case 'track':
+        case 'mycomplaints':
+            const section = document.getElementById('complaintsSection');
+            if(section){
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            break;
+        case 'help':
+            const footer = document.querySelector('.footer');
+            if(footer){
+                footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            break;
+    }
+}
+
+// Close sidebar on Escape key
+document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeSidebar();
+});
+
+// ============ COMPLAINTS ============
+
+function openComplaintModal(){
+    document.getElementById('complaintModal').classList.add('active');
+}
+
+function closeComplaintModal(){
+    document.getElementById('complaintModal').classList.remove('active');
+    // Reset form
+    document.getElementById('complaintCategory').value = '';
+    document.getElementById('complaintWard').value = '';
+    document.getElementById('complaintTitle').value = '';
+    document.getElementById('complaintDesc').value = '';
+    document.getElementById('complaintAddress').value = '';
+    removeImage();
+}
+
+// ============ IMAGE UPLOAD ============
+
+let selectedImageBase64 = null;
+
+function handleImageSelect(event){
+    const file = event.target.files[0];
+    if(!file) return;
+    if(!file.type.startsWith('image/')){
+        showToast('Please select a valid image file.', true);
+        return;
+    }
+    if(file.size > 5 * 1024 * 1024){
+        showToast('Image size must be under 5MB.', true);
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e){
+        selectedImageBase64 = e.target.result;
+        document.getElementById('previewImg').src = selectedImageBase64;
+        document.getElementById('imagePreview').style.display = 'inline-block';
+        document.getElementById('uploadArea').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeImage(){
+    selectedImageBase64 = null;
+    document.getElementById('complaintImage').value = '';
+    document.getElementById('previewImg').src = '';
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('uploadArea').style.display = 'block';
+}
+
+// Drag and drop support
+const uploadArea = document.getElementById('uploadArea');
+
+uploadArea.addEventListener('dragover', function(e){
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', function(){
+    uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', function(e){
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if(file){
+        document.getElementById('complaintImage').files = e.dataTransfer.files;
+        handleImageSelect({ target: { files: [file] } });
+    }
+});
+
+function openLightbox(src){
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('active');
+}
+
+const API_BASE = 'http://localhost:5000/api';
+
+// ============ DUPLICATE DETECTION ============
+
+let pendingComplaintData = null; // Store form data while checking for duplicates
+let currentDuplicateComplaintId = null; // Store the ID of the duplicate complaint
+
+async function submitComplaint(){
+    const category = document.getElementById('complaintCategory').value;
+    const ward = document.getElementById('complaintWard').value;
+    const title = document.getElementById('complaintTitle').value.trim();
+    const desc = document.getElementById('complaintDesc').value.trim();
+    const address = document.getElementById('complaintAddress').value.trim();
+
+    if(!category || !ward || !title || !desc){
+        showToast('Please fill in all required fields.', true);
+        return;
+    }
+
+    // Store form data for later use
+    pendingComplaintData = {
+        category,
+        ward,
+        title,
+        description: desc,
+        address,
+        image: selectedImageBase64 || null,
+        userEmail
+    };
+
+    showToast('Checking for similar complaints...');
+
+    try {
+        // Step 1: Check for duplicates
+        const dupRes = await fetch(API_BASE + '/complaints/check-duplicate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ category, ward })
+        });
+
+        const dupData = await dupRes.json();
+
+        if(dupRes.ok && dupData.duplicate){
+            // Duplicate found — show modal
+            showDuplicateModal(dupData.complaint);
+            return;
+        }
+
+        // No duplicate — proceed to create complaint
+        await createComplaint(pendingComplaintData);
+
+    } catch(err) {
+        showToast('Server unavailable. Please try again later.', true);
+        console.error('Submit error:', err);
+    }
+}
+
+function showDuplicateModal(complaint){
+    currentDuplicateComplaintId = complaint.complaint_id || complaint.id;
+    const statusClass = 'status-' + complaint.status.toLowerCase().replace(' ','-');
+    const createdDate = new Date(complaint.created_at).toLocaleDateString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    const infoDiv = document.getElementById('dupComplaintInfo');
+    infoDiv.innerHTML = `
+        <div class="dup-row">
+            <span class="dup-label">Complaint ID</span>
+            <span class="dup-value dup-id">${complaint.complaint_id || complaint.id}</span>
+        </div>
+        <div class="dup-row">
+            <span class="dup-label">Category</span>
+            <span class="dup-value">${complaint.category}</span>
+        </div>
+        <div class="dup-row">
+            <span class="dup-label">Ward / Location</span>
+            <span class="dup-value">${complaint.ward}</span>
+        </div>
+        <div class="dup-row">
+            <span class="dup-label">Status</span>
+            <span class="dup-status-badge ${statusClass}">${complaint.status}</span>
+        </div>
+        <div class="dup-row">
+            <span class="dup-label">Date Reported</span>
+            <span class="dup-value">${createdDate}</span>
+        </div>
+        <div class="dup-support-count">
+            👥 <span>${complaint.support_count}</span> citizen(s) have already supported this complaint
+        </div>
+    `;
+
+    document.getElementById('duplicateModal').classList.add('active');
+}
+
+function closeDuplicateModal(){
+    document.getElementById('duplicateModal').classList.remove('active');
+    currentDuplicateComplaintId = null;
+}
+
+function viewExistingComplaint(){
+    if(currentDuplicateComplaintId){
+        // Add as supporter before redirecting
+        supportAndRedirect();
+    }
+}
+
+async function supportAndRedirect(){
+    try {
+        await fetch(API_BASE + '/complaints/' + encodeURIComponent(currentDuplicateComplaintId) + '/support', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ citizenEmail: userEmail })
+        });
+    } catch(err) {
+        console.error('Support error:', err);
+    }
+    // Redirect to complaint detail page
+    window.location.href = 'complaint-detail.html?id=' + encodeURIComponent(currentDuplicateComplaintId);
+}
+
+async function supportExistingComplaint(){
+    const btn = document.getElementById('dupSupportBtn');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Supporting...';
+
+    try {
+        const res = await fetch(API_BASE + '/complaints/' + encodeURIComponent(currentDuplicateComplaintId) + '/support', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ citizenEmail: userEmail })
+        });
+
+        const data = await res.json();
+
+        if(res.ok){
+            closeDuplicateModal();
+            closeComplaintModal();
+            showToast('✅ You have been added as a supporter! (Support count: ' + data.complaint.support_count + ')');
+            loadComplaints();
+        } else {
+            showToast(data.error || 'Failed to support complaint.', true);
+            btn.disabled = false;
+            btn.innerHTML = '👍 Support This Complaint';
+        }
+    } catch(err){
+        showToast('Server error. Please try again.', true);
+        btn.disabled = false;
+        btn.innerHTML = '👍 Support This Complaint';
+    }
+}
+
+async function continueAnyway(){
+    closeDuplicateModal();
+    if(pendingComplaintData){
+        showToast('Submitting complaint...');
+        await createComplaint(pendingComplaintData);
+    }
+}
+
+async function createComplaint(complaintData){
+    try {
+        const res = await fetch(API_BASE + '/complaints', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(complaintData)
+        });
+
+        const data = await res.json();
+
+        if(res.ok){
+            closeComplaintModal();
+            showToast('Complaint ' + data.complaint.id + ' filed successfully!');
+            loadComplaints();
+            updateDashboardCounts();
+        } else {
+            showToast(data.error || 'Failed to submit complaint.', true);
+        }
+    } catch(err) {
+        showToast('Server unavailable. Please try again later.', true);
+        console.error('Create complaint error:', err);
+    }
+    pendingComplaintData = null;
+}
+
+async function loadComplaints(){
+    const list = document.getElementById('complaintsList');
+
+    try {
+        const res = await fetch(API_BASE + '/complaints/user/' + encodeURIComponent(userEmail));
+        const myComplaints = await res.json();
+
+        if(!Array.isArray(myComplaints) || myComplaints.length === 0){
+            list.innerHTML = '<div class="no-complaints">You haven\'t filed any complaints yet. Click "File a Complaint" to get started.</div>';
+            return;
+        }
+
+        let html = '';
+        myComplaints.forEach(c => {
+            const statusClass = 'status-' + c.status.toLowerCase().replace(' ','-');
+            html += '<div class="complaint-card">';
+            html += '<div class="complaint-info">';
+            html += '<h4>' + c.complaintId + ' — ' + c.title + '</h4>';
+            html += '<p>📁 ' + c.category + ' | 🏘️ ' + c.ward + '</p>';
+            html += '<p>📅 Filed: ' + c.date + (c.address ? ' | 📍 ' + c.address : '') + '</p>';
+            
+            // Display assigned officer info
+            if(c.assignedOfficerName){
+                html += '<p style="color:#2c3e90;font-weight:600;margin-top:8px;">👮 Assigned Officer: ' + c.assignedOfficerName;
+                if(c.assignedOfficerDepartment){
+                    html += ' (' + c.assignedOfficerDepartment + ')';
+                }
+                html += '</p>';
+            } else {
+                html += '<p style="color:#999;font-size:12px;margin-top:8px;">👮 Officer: Not yet assigned</p>';
+            }
+            
+            // Display SLA status
+            if(c.slaDeadline){
+                const now = new Date();
+                const deadline = new Date(c.slaDeadline);
+                const timeRemaining = deadline - now;
+                const hoursRemaining = Math.ceil(timeRemaining / (1000 * 60 * 60));
+                let slaDisplay = '';
+                
+                if(c.status === 'Resolved' || c.status === 'Escalated'){
+                    slaDisplay = c.status === 'Resolved' ? '✅ SLA: Completed' : '⚠️ SLA: Escalated';
+                } else if(timeRemaining <= 0 || c.autoEscalated){
+                    slaDisplay = '❌ SLA: Breached (Auto-escalated)';
+                } else if(hoursRemaining <= 4){
+                    slaDisplay = '⏰ SLA: ' + Math.max(0, hoursRemaining) + 'h remaining';
+                } else {
+                    slaDisplay = '✅ SLA: Within timeframe (' + hoursRemaining + 'h remaining)';
+                }
+                html += '<p style="font-size:11px;color:#666;margin-top:4px;">' + slaDisplay + '</p>';
+            }
+            
+            if(c.image){
+                html += '<div class="complaint-img"><img src="' + c.image + '" alt="Complaint Image" onclick="openLightbox(this.src)"></div>';
+            }
+            html += '</div>';
+            html += '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">';
+            html += '<div class="complaint-status ' + statusClass + '">' + c.status + '</div>';
+            html += '<button class="show-details-btn" onclick="window.location.href=\'complaint-detail.html?id=' + c.complaintId + '\'">Show Details</button>';
+            if(c.status === 'Resolved'){
+                html += '<button class="show-details-btn" style="background:#2c3e90;" onclick="window.location.href=\'appeal-detail.html?id=' + c.complaintId + '\'">📋 Appeal</button>';
+            }
+            if(c.status === 'Pending'){
+                html += '<button class="show-details-btn" style="background:#e74c3c;" onclick="deleteCommentWithConfirm(\'' + c.complaintId + '\')">🗑️ Delete</button>';
+            }
+            html += '</div>';
+            html += '</div>';
+        });
+
+        list.innerHTML = html;
+    } catch(err) {
+        list.innerHTML = '<div class="no-complaints">Could not load complaints. Server may be offline.</div>';
+        console.error('Load complaints error:', err);
+    }
+}
+
+async function updateDashboardCounts(){
+    try {
+        const res = await fetch(API_BASE + '/complaints/user/' + encodeURIComponent(userEmail));
+        const myComplaints = await res.json();
+
+        if(Array.isArray(myComplaints) && myComplaints.length > 0){
+            document.getElementById('totalCount').textContent = myComplaints.length;
+            document.getElementById('pendingCount').textContent = myComplaints.filter(c => c.status === 'Pending').length;
+            document.getElementById('resolvedCount').textContent = myComplaints.filter(c => c.status === 'Resolved').length;
+        } else {
+            document.getElementById('totalCount').textContent = 0;
+            document.getElementById('pendingCount').textContent = 0;
+            document.getElementById('resolvedCount').textContent = 0;
+        }
+    } catch(err) {
+        console.error('Dashboard count error:', err);
+    }
+}
+
+// ============ TOAST ============
+
+function showToast(msg, isError){
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast' + (isError ? ' error' : '');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+
+// ============ LANGUAGE ============
+
+const translations = {
+    en: {
+        total_complaints: 'Total Complaints',
+        resolved: 'Resolved',
+        pending: 'Pending',
+        avg_resolution: 'Avg Resolution',
+        category_complaints: 'Category-wise Complaints',
+        roads: 'Roads & Infra',
+        water: 'Water Supply',
+        electricity: 'Electricity',
+        sanitation: 'Sanitation',
+        safety: 'Public Safety',
+        resolution_status: 'Resolution Status',
+        escalated: 'Escalated',
+        ward_sla: 'Ward-wise SLA Compliance',
+        ward: 'Ward',
+        total: 'Total',
+        avg_time: 'Avg Time',
+        my_complaints: '📋 My Complaints'
+    },
+    mr: {
+        total_complaints: 'एकूण तक्रारी',
+        resolved: 'निराकरण झाले',
+        pending: 'प्रलंबित',
+        avg_resolution: 'सरासरी निराकरण',
+        category_complaints: 'विभागवार तक्रारी',
+        roads: 'रस्ते आणि पायाभूत सुविधा',
+        water: 'पाणीपुरवठा',
+        electricity: 'वीज',
+        sanitation: 'स्वच्छता',
+        safety: 'सार्वजनिक सुरक्षा',
+        resolution_status: 'निराकरण स्थिती',
+        escalated: 'वाढविले',
+        ward_sla: 'प्रभागनिहाय SLA अनुपालन',
+        ward: 'प्रभाग',
+        total: 'एकूण',
+        avg_time: 'सरासरी वेळ',
+        my_complaints: '📋 माझ्या तक्रारी'
+    }
+};
+
+function setLanguage(lang){
+    localStorage.setItem('language', lang);
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if(translations[lang] && translations[lang][key]){
+            el.textContent = translations[lang][key];
+        }
+    });
+}
+
+// ============ REAPPEAL & CLOSE ============
+
+let currentComplaintIdForReappeal = null;
+let reappealImageBase64 = null;
+
+function openReappealModal(complaintId){
+    currentComplaintIdForReappeal = complaintId;
+    document.getElementById('reappealReason').value = '';
+    document.getElementById('reappealComment').value = '';
+    document.getElementById('reappealImage').value = '';
+    reappealImageBase64 = null;
+    document.getElementById('reappealImagePreview').style.display = 'none';
+    document.getElementById('reappealModal').classList.add('active');
+}
+
+function closeReappealModal(){
+    document.getElementById('reappealModal').classList.remove('active');
+    currentComplaintIdForReappeal = null;
+    reappealImageBase64 = null;
+}
+
+function handleReappealImageSelect(event){
+    const file = event.target.files[0];
+    if(!file) return;
+    if(!file.type.startsWith('image/')){
+        showToast('Please select a valid image file.', true);
+        return;
+    }
+    if(file.size > 5 * 1024 * 1024){
+        showToast('Image size must be under 5MB.', true);
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e){
+        reappealImageBase64 = e.target.result;
+        document.getElementById('reappealPreviewImg').src = reappealImageBase64;
+        document.getElementById('reappealImagePreview').style.display = 'inline-block';
+        document.getElementById('reappealUploadArea').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeReappealImage(){
+    reappealImageBase64 = null;
+    document.getElementById('reappealImage').value = '';
+    document.getElementById('reappealPreviewImg').src = '';
+    document.getElementById('reappealImagePreview').style.display = 'none';
+    document.getElementById('reappealUploadArea').style.display = 'block';
+}
+
+async function submitReappeal(){
+    const reason = document.getElementById('reappealReason').value.trim();
+    const comment = document.getElementById('reappealComment').value.trim();
+
+    if(!reason){
+        showToast('Please select a reason for reappeal.', true);
+        return;
+    }
+    if(!comment){
+        showToast('Please provide additional comments.', true);
+        return;
+    }
+
+    try {
+        const res = await fetch(API_BASE + '/complaints/' + currentComplaintIdForReappeal + '/reappeal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                reappeal_reason: reason,
+                reappeal_comment: comment,
+                reappeal_image: reappealImageBase64 || null
+            })
+        });
+
+        const data = await res.json();
+
+        if(res.ok){
+            closeReappealModal();
+            showToast('Reappeal submitted successfully! Your complaint has been reopened.');
+            loadComplaints();
+            updateDashboardCounts();
+        } else {
+            showToast(data.error || 'Failed to submit reappeal.', true);
+        }
+    } catch(err) {
+        showToast('Server unavailable. Please try again.', true);
+        console.error('Reappeal error:', err);
+    }
+}
+
+async function closeComplaintAction(complaintId){
+    if(!confirm('Are you sure you want to confirm this resolution as satisfactory? This will close the complaint.')){
+        return;
+    }
+
+    try {
+        const res = await fetch(API_BASE + '/complaints/' + complaintId + '/close', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await res.json();
+
+        if(res.ok){
+            showToast('Thank you! Complaint confirmed and closed.');
+            loadComplaints();
+            updateDashboardCounts();
+        } else {
+            showToast(data.error || 'Failed to close complaint.', true);
+        }
+    } catch(err) {
+        showToast('Server unavailable. Please try again.', true);
+        console.error('Close complaint error:', err);
+    }
+}
+
+// ============ DELETE COMPLAINT ============
+
+let complaintToDelete = null;
+
+function deleteCommentWithConfirm(complaintId){
+    complaintToDelete = complaintId;
+    document.getElementById('deleteModal').classList.add('active');
+}
+
+function closeDeleteModal(){
+    document.getElementById('deleteModal').classList.remove('active');
+    complaintToDelete = null;
+}
+
+async function confirmDeleteComplaint(){
+    if(!complaintToDelete){
+        showToast('Error: Complaint ID not found.', true);
+        return;
+    }
+
+    try {
+        const res = await fetch(API_BASE + '/complaints/' + complaintToDelete, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userEmail })
+        });
+
+        const data = await res.json();
+
+        if(res.ok){
+            closeDeleteModal();
+            showToast('✅ Complaint deleted successfully!');
+            loadComplaints();
+            updateDashboardCounts();
+        } else {
+            showToast(data.error || 'Failed to delete complaint.', true);
+        }
+    } catch(err) {
+        showToast('Server unavailable. Please try again.', true);
+        console.error('Delete complaint error:', err);
+    }
+}
+
+// ============ CHART ============
+
+const ctx = document.getElementById('resolutionChart');
+
+new Chart(ctx, {
+
+type: 'doughnut',
+
+data:{
+labels:['Resolved','Pending','Escalated'],
+
+datasets:[{
+data:[178,52,17],
+
+backgroundColor:[
+'#2ecc71',
+'#f39c12',
+'#e74c3c'
+],
+
+borderWidth:0
+}]
+},
+
+options:{
+cutout:'70%',
+plugins:{
+legend:{display:false}
+}
+}
+
+});
+
+// ============ INIT ============
+
+updateAuthUI();
+
+// Restore saved language
+const savedLang = localStorage.getItem('language');
+if(savedLang && savedLang !== 'en'){
+    setLanguage(savedLang);
+}
+
+</script>
+
+</body>
+</html>
